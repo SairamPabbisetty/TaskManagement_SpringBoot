@@ -53,6 +53,11 @@ public class Users {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
+	@Override
+	public String toString() {
+		return "Users [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + "]";
+	}
+
 	@Column(name = "email", nullable = false)
 	private String email;
 	

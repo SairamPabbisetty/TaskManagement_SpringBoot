@@ -28,12 +28,36 @@ public class Task {
 	@Column(name = "taskname", nullable = false)
 	private String taskname;
 	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getTaskname() {
+		return taskname;
+	}
+
+	public void setTaskname(String taskname) {
+		this.taskname = taskname;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "users_id")
 	private Users user;
+	
+	public Users getUser() {
+		return user;
+	}
+	
+	public void setUser(Users user) {
+		this.user = user;
+	}
 
-//	public void setUsers(Users user) {
-//		// TODO Auto-generated method stub
-//		this.user = user;
-//	}  
+	@Override
+	public String toString() {
+		return "Task [id=" + id + ", taskname=" + taskname + ", user=" + user + "]";
+	}  
 }

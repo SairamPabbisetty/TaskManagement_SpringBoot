@@ -21,6 +21,11 @@ public class TaskDto {
 		this.taskname = taskname;
 	}
 	
+	@Override
+	public String toString() {
+		return "TaskDto [id=" + id + ", taskname=" + taskname + "]";
+	}
+
 	private Long id;
 	private String taskname; 
 }
