@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.std.springbootmvc.entity.Task;
 import com.std.springbootmvc.entity.Users;
+import com.std.springbootmvc.exception.ApiException;
+import com.std.springbootmvc.exception.TaskNotFound;
 import com.std.springbootmvc.exception.UserNotFound;
 import com.std.springbootmvc.payload.TaskDto;
 import com.std.springbootmvc.repository.TaskRepository;
@@ -60,11 +62,40 @@ public class TaskServiceImpl implements TaskService {
 				() -> new UserNotFound(String.format("User Id %d not found", userId))
 				); 
 		
-		List<Task> tasks = taskRepository.findAllByUsersId(userId); 
+		List<Task> tasks = taskRepository.findAllByUserId(userId); 
 		
 		return tasks.stream().map(
 				task -> modelMapper.map(task, TaskDto.class)
 				).collect(Collectors.toList()); 
+	}
+	
+	@Override 
+	public TaskDto getTask(long userId, long taskId) {
+		Users users = userRepository.findById(userId).orElseThrow(
+				() -> new UserNotFound(String.format("User Id %d not found", userId))
+				);
+		Task task = taskRepository.findById(taskId).orElseThrow(
+				() -> new TaskNotFound(String.format("Task id %d not found", taskId))
+				);
+		if(users.getId() != task.getUser().getId()) {
+			throw new ApiException(String.format("Task Id %d doesn't belongs to User Id %d", taskId, userId));
+		}
+		return modelMapper.map(task, TaskDto.class); 
+	}
+
+	@Override
+	public void deleteTask(long userId, long taskId) {
+		// TODO Auto-generated method stub
+		Users users = userRepository.findById(userId).orElseThrow(
+				() -> new UserNotFound(String.format("User Id %d not found", userId))
+				);
+		Task task = taskRepository.findById(taskId).orElseThrow(
+				() -> new TaskNotFound(String.format("Task id %d not found", taskId))
+				);
+		if(users.getId() != task.getUser().getId()) {
+			throw new ApiException(String.format("Task Id %d doesn't belongs to User Id %d", taskId, userId));
+		}
+		taskRepository.deleteById(taskId); 
 	}
 
 }
