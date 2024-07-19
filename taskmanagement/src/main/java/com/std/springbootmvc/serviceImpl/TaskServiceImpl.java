@@ -66,7 +66,7 @@ public class TaskServiceImpl implements TaskService {
 		
 		return tasks.stream().map(
 				task -> modelMapper.map(task, TaskDto.class)
-				).collect(Collectors.toList()); 
+				).collect(Collectors.toList());  
 	}
 	
 	@Override 
